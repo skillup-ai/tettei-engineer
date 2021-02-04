@@ -97,7 +97,6 @@ class TimeAffine:
         return out.reshape(N, T, -1)
 
     
-    
 if __name__=="__main__":
     N = 2
     V = 20

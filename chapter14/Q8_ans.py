@@ -33,6 +33,7 @@ def softmax(x):
         x = np.exp(x) / np.sum(np.exp(x))
     return x
 
+
 if __name__=="__main__":
     N = 2
     T = 3
