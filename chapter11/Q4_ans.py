@@ -136,3 +136,18 @@ class FullyConnectedNeuralNetwork():
         self._backward(t, activations)
 
         return loss
+    
+    
+if __name__=="__main__":    
+    X = np.arange(21).reshape(3,7)
+    print("X=\n",X)
+    
+    t = np.array([[0,1,0],[0,1,0],[1,0,0]])
+    print("t=\n",t)
+
+    layer_units=[7,4,3]
+
+    mp = FullyConnectedNeuralNetwork(layer_units=layer_units)
+    loss = mp._forward_and_back(X, t)
+    print("loss=",loss)
+

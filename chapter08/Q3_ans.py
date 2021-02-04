@@ -1,4 +1,6 @@
 import numpy as np
+from Q2_ans import compute_distances
+
 
 def init_centroid(X, n_data, k):
     # 1つ目の重心をランダムに選択
@@ -23,3 +25,14 @@ def init_centroid(X, n_data, k):
         # 選ばれた点を新たな重心として追加
         centroids = np.vstack([centroids, X[candidate_ids]])
     return centroids
+
+if __name__=="__main__":
+    X = np.arange(10*5).reshape(10, 5)
+    print("X\n", X)
+    
+    k = 3 
+    print("k=",k)
+    
+    n_data = X.shape[0]
+    centroids = init_centroid(X, n_data, k)        
+    print("centroids", centroids)

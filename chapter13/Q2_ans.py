@@ -15,10 +15,10 @@ def im2col(input_data, filter_h, filter_w, stride, pad, constant_values=0):
     N, C, H, W = input_data.shape
 
     # 出力データの高さ(端数は切り捨てる)
-    out_h = (H + 2 * pad filter_h) // stride + 1
+    out_h = (H + 2 * pad - filter_h) // stride + 1
 
     # 出力データの幅(端数は切り捨てる)
-    out_w = (W + 2 * pad filter_w) // stride + 1
+    out_w = (W + 2 * pad - filter_w) // stride + 1
 
     # パディング処理
     img = np.pad(
@@ -39,7 +39,7 @@ def im2col(input_data, filter_h, filter_w, stride, pad, constant_values=0):
             col[:, :, y, x, :, :] = img[:, :, y:y_max:stride, x:x_max:stride]
 
     # 軸を入れ替えて、2次元配列(行列)に変換する
-    col = col.transpose(0, 4, 5, 1, 2, 3).reshape(N * out_h * out_w, 1)
+    col = col.transpose(0, 4, 5, 1, 2, 3).reshape(N * out_h * out_w, -1)
 
     return col
 
@@ -56,10 +56,10 @@ def maxpooling_forward(x, pad, stride, pool_h, pool_w):
     N, C, H, W = x.shape
 
     # 出力の高さ(端数は切り捨てる)
-    out_h = (H + 2 * pad pool_h) // stride + 1
+    out_h = (H + 2 * pad - pool_h) // stride + 1
 
     # 出力の幅(端数は切り捨てる)
-    out_w = (W + 2 * pad pool_w) // stride + 1
+    out_w = (W + 2 * pad - pool_w) // stride + 1
 
     # 2次元配列に変換する
     col = im2col(x, pool_h, pool_w, stride, pad, constant_values=0)
@@ -89,13 +89,13 @@ def convolution_forward(x, W, b, pad, stride):
     """
 
     FN, C, FH, FW = W.shape
-    N, C, H, W = x.shape
+    N, C, IH, IW = x.shape
 
     # 出力の高さ(端数は切り捨てる)
-    out_h = (H + 2 * pad FH) // stride + 1
+    out_h = (IH + 2 * pad - FH) // stride + 1
 
     # 出力の幅(端数は切り捨てる)
-    out_w = (W + 2 * pad FW) // stride + 1
+    out_w = (IW + 2 * pad - FW) // stride + 1
 
     # 畳み込み演算を効率的に行えるようにするため、入力xを行列colに変換する
     col = im2col(x, FH, FW, stride, pad)
@@ -110,3 +110,25 @@ def convolution_forward(x, W, b, pad, stride):
     out = out.reshape(N, out_h, out_w, -1). transpose(0, 3, 1, 2)
 
     return out
+
+
+if __name__=="__main__":
+    x = np.arange(2*3*28*28).reshape(2, 3, 28 ,28)
+    print("x\n", x)
+    pad = 1
+    stride = 1
+    pool_h = 3
+    pool_w = 3
+    out_idx, out = maxpooling_forward(x, pad, stride, pool_h, pool_w)
+    print("out_idx\n", out_idx)
+    print("out\n", out)
+    
+    x = np.arange(2*3*28*28).reshape(2, 3, 28 ,28)
+    print("x\n", x)    
+    W = np.arange(5*3*3*3).reshape(5, 3, 3, 3)
+    print("W\n", W) 
+    b = np.array([1])
+    print("b\n", b)
+    pad = 1
+    stride = 1    
+    out = convolution_forward(x, W, b, pad, stride)

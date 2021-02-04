@@ -30,3 +30,19 @@ def im2col(input_data, filter_h, filter_w, stride=1, pad=0):
 
     col = col.transpose(0, 4, 5, 1, 2, 3).reshape(out_h * out_w * N, -1)
     return col
+
+
+if __name__=="__main__":
+    N = 2
+    C = 3
+    H = 4
+    W = 4
+    input_data = np.random.randn(N, C, H, W)
+    print("input_data\n", input_data)
+    
+    filter_h = 3
+    filter_w = 3
+    col = im2col(input_data, filter_h, filter_w)
+    print("col\n", col)
+
+    

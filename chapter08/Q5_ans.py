@@ -23,3 +23,10 @@ def pca(X, n_components=2):
 
     return T
 
+
+if __name__=="__main__":
+    X = np.arange(10*5).reshape(10, 5)
+    print("X\n", X)
+    
+    T =pca(X, n_components=2)   
+    print("T\n", T)

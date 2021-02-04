@@ -37,3 +37,29 @@ class GRU:
         逆伝播計算（省略）
         """       
         return dx, dh_prev
+    
+    
+if __name__=="__main__":
+    N = 2
+    D = 3
+    H = 4
+    x = np.random.randn(N, D)
+    print("x\n", x)
+    
+    h_prev = np.random.randn(N, H)
+    print("h_prev\n", h_prev)
+    
+    Wx = np.random.randn(D, 3*H)
+    print("Wx\n", Wx)
+    
+    Wh = np.random.randn(H, 3*H)
+    print("Wh\n", Wh)   
+    
+    b = np.random.randn(3*H)
+    print("b\n", b) 
+    
+    gr = GRU(Wx, Wh, b)
+    h_next, c_next = gr.forward(x, h_prev)
+    print("h_next\n", h_next)
+    print("c_next\n", c_next)    
+    

@@ -1,6 +1,6 @@
 import numpy as np
 
-def forward(self, hs, h):
+def forward(hs, h):
     """
     順伝播
     重みベクトルを求めるための関数
@@ -21,3 +21,27 @@ def forward(self, hs, h):
     a = softmax(s) # aは重みベクトルを並べた行列 (N * T)
 
     return a
+
+
+def softmax(x):
+    if x.ndim == 2:
+        x = x - x.max(axis=1, keepdims=True)
+        x = np.exp(x)
+        x /= x.sum(axis=1, keepdims=True)
+    elif x.ndim == 1:
+        x = x - np.max(x)
+        x = np.exp(x) / np.sum(np.exp(x))
+    return x
+
+if __name__=="__main__":
+    N = 2
+    T = 3
+    H = 4
+    hs = np.random.randn(N, T, H)
+    print("hs\n", hs)
+    
+    h = np.random.randn(N, H)
+    print("h\n", h)
+    
+    a = forward(hs, h)
+    print("a\n", a)

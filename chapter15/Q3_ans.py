@@ -1,3 +1,7 @@
+import numpy as np
+from layers import TimeEmbedding, TimeSoftmaxWithLoss
+
+
 class SimpleRnnlm:
     def __init__(self, vocab_size, wordvec_size, hidden_size):
         V, D, H = vocab_size, wordvec_size, hidden_size
@@ -91,3 +95,23 @@ class TimeAffine:
         out = np.dot(rx, W) + b
         self.x = x
         return out.reshape(N, T, -1)
+
+    
+    
+if __name__=="__main__":
+    N = 2
+    V = 20
+    T = 10
+    D = 3
+    H = 4
+    xs = np.random.randint(0, V, size=(N, T))
+    print("xs\n", xs)
+    
+    ts = np.random.randint(0, V, size=(N, T))
+    print("ts\n", ts)
+    
+    sr = SimpleRnnlm(vocab_size=V, wordvec_size=D, hidden_size=H)
+    loss = sr.forward(xs, ts)
+    print("loss\n", loss)
+    
+    

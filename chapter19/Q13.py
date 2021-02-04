@@ -1,3 +1,5 @@
+import numpy as np
+
 class Adam:
     """
     Adam
@@ -32,3 +34,21 @@ class Adam:
             
             # 重みの更新
             params[key] -= self.lr * m / (np.sqrt(v) + self.epsilon) 
+            
+            
+if __name__=="__main__":
+    
+    cls = Adam()  
+
+    params = {"affine1":np.random.randn(6).reshape(2,3),
+                  "affine2":np.random.randn(6).reshape(2,3)
+                 }
+    grads = {"affine1":np.random.randn(6).reshape(2,3),
+                "affine2":np.random.randn(6).reshape(2,3)
+               }
+
+    print("params\n", params)
+    print("grads\n", grads)
+    cls.update(params, grads)
+    print("params after\n", params)
+

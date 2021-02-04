@@ -46,6 +46,21 @@ def k_means(k, X, max_iter=300):
         if (new_cluster == cluster).all():
             break
 
-        gcluster = new_cluster
+        cluster = new_cluster
 
     return cluster
+
+
+if __name__=="__main__":
+    X = np.arange(10*5).reshape(10, 5)
+    print("X\n", X)
+    k = 3 
+    print("k=",k)
+
+    cluster = k_means(k, X, max_iter=300)
+    print("cluster", cluster)
+    
+    
+    
+    
+    
