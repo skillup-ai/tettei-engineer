@@ -43,21 +43,19 @@ if __name__=="__main__":
     
     sg = Sigmoid()
     
-    x = np.array([[1,2,3],
-                    [4,5,6]])
-    w = np.array([[1,2,3]])
-    b = np.array([1])
- 
-    y_pred = sg.forward( x, w, b)
+    x = np.random.randn(10, 3)
+    w = np.random.randn(1, 3)
+    b = np.array([1.0])
+    print("x\n", x)
+    print("w\n", w)
+    print("b\n", b)
+    
+    y_pred = sg.forward(x, w, b)
     print("y_pred\n", y_pred)
-    
-    dy = np.array([1,2])
-    dw, db = sg.backward(dy)
-    print("dw\n",dw)
-    print("db\n",db)
-    
+
     nll = NegativeLogLikelihood()
-    y_true = np.array([1,2])
+    y_true = x[:, 0] > 0
+    print("y_true\n", y_true)
     
     loss = nll.forward(y_pred, y_true)
     print("loss",loss)
@@ -65,3 +63,25 @@ if __name__=="__main__":
     dy = nll.backward()
     print("dy", dy)
     
+    dw, db = sg.backward(dy)
+    print("dw\n",dw)
+    print("db\n",db)    
+
+    # パラメータw,bを勾配法によって最適化する
+    lr = 0.1
+    for i in range(1000):
+        y_pred = sg.forward(x, w, b)
+        loss = nll.forward(y_pred, y_true)
+        print("loss=", loss)
+        dy = nll.backward()
+        dw, db = sg.backward(dy)
+        w -= lr * dw
+        b -= lr * db
+    print(w,b)
+    print("w[0]の値だけ大きくなっていたら学習成功\n")
+    
+    print("訓練データに対する予測結果")
+    y_pred = sg.forward(x, w, b) 
+    y_pred = y_pred > 0.5
+    print("y_pred\n", y_pred)
+    print("y_true\n", y_true)
