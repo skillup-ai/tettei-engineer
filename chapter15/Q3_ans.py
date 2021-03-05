@@ -57,7 +57,6 @@ class TimeRNN:
         self.params = [Wx, Wh, b]
         self.grads = [np.zeros_like(Wx), np.zeros_like(Wh), np.zeros_like(b)]
         self.layers = None
-
         self.h, self.dh = None, None
 
     def forward(self, xs):
