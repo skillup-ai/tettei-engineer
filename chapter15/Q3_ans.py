@@ -18,7 +18,7 @@ class SimpleRnnlm:
         # レイヤの生成
         self.layers = [
             TimeEmbedding(embed_W),
-            TimeRNN(rnn_Wx, rnn_Wh, rnn_b, stateful=True),
+            TimeRNN(rnn_Wx, rnn_Wh, rnn_b),
             TimeAffine(affine_W, affine_b)
         ]
         self.loss_layer = TimeSoftmaxWithLoss()
@@ -53,13 +53,12 @@ class RNN:
 
 
 class TimeRNN:
-    def __init__(self, Wx, Wh, b, stateful=False):
+    def __init__(self, Wx, Wh, b):
         self.params = [Wx, Wh, b]
         self.grads = [np.zeros_like(Wx), np.zeros_like(Wh), np.zeros_like(b)]
         self.layers = None
 
         self.h, self.dh = None, None
-        self.stateful = stateful
 
     def forward(self, xs):
         Wx, Wh, b = self.params
@@ -69,7 +68,7 @@ class TimeRNN:
         self.layers = []
         hs = np.empty((N, T, H), dtype='f')
 
-        if not self.stateful or self.h is None:
+        if self.h is None:
             self.h = np.zeros((N, H), dtype='f')
 
         for t in range(T):
