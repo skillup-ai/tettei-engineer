@@ -25,9 +25,9 @@ def forward(x, h_prev, c_prev, Wx, Wh, b):
     i = sigmoid(i)
     o = sigmoid(o)
 
+    print(f.shape, c_prev.shape, g.shape, i.shape)
     c_next = f * c_prev + g * i
     h_next = o * np.tanh (c_next)
-
 
     return h_next, c_next
 
