@@ -8,7 +8,7 @@ def softmax(X):
     return np.exp(X) / np.sum(np.exp(X), axis=1, keepdims=True)
 
 def relu_backward(Z, delta):
-    delta[Z == 0] = 0
+    delta[Z <= 0] = 0
 
 def cross_entropy_error(y, t):
     batch_size = y.shape[0]
